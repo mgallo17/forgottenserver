@@ -6,7 +6,7 @@ on:
 jobs:
   build-arm64:
     name: Compile TFS 1.2 ARM64 (7.7)
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-22.04-arm
     steps:
       - name: Checkout branch 1.2
         uses: actions/checkout@v4
@@ -19,8 +19,7 @@ jobs:
           sudo apt-get install -y \
             cmake build-essential \
             libboost-system-dev libboost-filesystem-dev \
-            default-libmysqlclient-dev \
-            libluajit-5.1-dev \
+            libmariadb-dev libluajit-5.1-dev \
             libpugixml-dev libgmp-dev
 
       - name: Build
@@ -29,8 +28,8 @@ jobs:
           cmake .. -DCMAKE_BUILD_TYPE=Release \
             -DLUA_INCLUDE_DIR=/usr/include/luajit-2.1 \
             -DLUA_LIBRARY=/usr/lib/aarch64-linux-gnu/libluajit-5.1.so \
-            -DMYSQL_INCLUDE_DIR=/usr/include/mysql \
-            -DMYSQL_CLIENT_LIBS=mysqlclient
+            -DMYSQL_INCLUDE_DIR=/usr/include/mariadb \
+            -DMYSQL_CLIENT_LIBS=mariadb
           make -j$(nproc)
 
       - name: Upload artifact
