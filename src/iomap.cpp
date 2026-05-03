@@ -344,11 +344,11 @@ bool IOMap::loadMap(Map* map, const std::string& identifier)
 					}
 
 					if (!item->unserializeItemNode(f, nodeItem, stream)) {
-						std::ostringstream ss;
-						ss << "[x:" << x << ", y:" << y << ", z:" << z << "] Failed to load item " << item->getID() << '.';
-						setLastErrorString(ss.str());
+							std::cout << "[Warning - IOMap] Failed to load item " << item->getID() << ", skipping." << std::endl;
+							// skipped
+							// skip
 						delete item;
-						return false;
+							continue;
 					}
 
 					if (isHouseTile && item->isMoveable()) {
