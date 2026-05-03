@@ -27,14 +27,13 @@ jobs:
         run: |
           MYSQL_INC=$(find /usr/include -name "mysql.h" 2>/dev/null | head -1 | xargs dirname)
           MYSQL_LIB=$(find /usr/lib -name "libmysqlclient*" 2>/dev/null | head -1 | xargs dirname)
-          echo "MySQL include: $MYSQL_INC"
-          echo "MySQL lib: $MYSQL_LIB"
           mkdir -p build && cd build
           cmake .. -DCMAKE_BUILD_TYPE=Release \
             -DMYSQL_INCLUDE_DIR="$MYSQL_INC" \
             -DMYSQL_LIB_DIR="$MYSQL_LIB" \
             -DLUA_INCLUDE_DIR=/usr/include/luajit-2.1 \
-            -DLUA_LIBRARY=/usr/lib/aarch64-linux-gnu/libluajit-5.1.so
+            -DLUA_LIBRARY=/usr/lib/aarch64-linux-gnu/libluajit-5.1.so \
+            -DCMAKE_CXX_FLAGS="-Wno-format-overflow -Wno-error=format-overflow"
           make -j$(nproc)
 
       - name: Upload artifact
