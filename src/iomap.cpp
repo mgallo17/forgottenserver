@@ -118,8 +118,7 @@ bool IOMap::loadMap(Map* map, const std::string& identifier)
 	}
 
 	if (root_header.minorVersionItems < CLIENT_VERSION_810) {
-		setLastErrorString("This map needs to be updated.");
-		return false;
+		std::cout << "[Warning - IOMap] Old map minor version, loading anyway." << std::endl;
 	}
 
 	if (root_header.minorVersionItems > Item::items.minorVersion) {
@@ -286,10 +285,8 @@ bool IOMap::loadMap(Map* map, const std::string& identifier)
 						case OTBM_ATTR_ITEM: {
 							Item* item = Item::CreateItem(propStream);
 							if (!item) {
-								std::ostringstream ss;
-								ss << "[x:" << x << ", y:" << y << ", z:" << z << "] Failed to create item.";
-								setLastErrorString(ss.str());
-								return false;
+								std::cout << "[Warning - IOMap] [x:" << x << ", y:" << y << ", z:" << z << "] Failed to create item, skipping." << std::endl;
+								continue;
 							}
 
 							if (isHouseTile && item->isMoveable()) {
@@ -342,10 +339,8 @@ bool IOMap::loadMap(Map* map, const std::string& identifier)
 
 					Item* item = Item::CreateItem(stream);
 					if (!item) {
-						std::ostringstream ss;
-						ss << "[x:" << x << ", y:" << y << ", z:" << z << "] Failed to create item.";
-						setLastErrorString(ss.str());
-						return false;
+						std::cout << "[Warning - IOMap] [x:" << x << ", y:" << y << ", z:" << z << "] Failed to create item, skipping." << std::endl;
+						continue;
 					}
 
 					if (!item->unserializeItemNode(f, nodeItem, stream)) {
